@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record id="order_tag_form_view" model="ir.ui.view">
+            <field name="name">order.tag.form.view</field>
+            <field name="model">order.tag</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <h3>
+                            <field name="name"></field>
+                        </h3>
+                        <group>
+                            <field name="color"></field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    
+        
+    
+    </data>
+</odoo>
