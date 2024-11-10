@@ -18,7 +18,8 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    # relations between apps
+    'depends': ['base','stock'], #unknown object has no attribue id (many to one)   settings->technical->models->product.product->In apps
 
     # always loaded
     'data': [
