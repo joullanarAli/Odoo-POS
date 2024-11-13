@@ -5,19 +5,30 @@
             <field name="model">meal.order</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <button string='confirm' type="object" name='action_confirm' class="btn-primary" invisible="state!='draft'"/>
+                        <button string= 'in_process' type="object" name='action_in_process' class="btn-warning" invisible="state!='confirmed'"/>
+                        <button string= 'delivered' type="object" name='action_delivered' class="btn-success" invisible="state!='in_process'"/>
+                        <button string= 'cancelled' type="object" name='action_cancelled' class="btn-danger" invisible="state=='delivered'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_process,delivered"></field>
+                    </header>
                     <sheet>
                         <h1>
-                            <field name="name"></field>
+                            <field name="name" readonly="state in ('confirmed', 'in_process', 'delivered','cancelled')"
+                                required="state=='draft'"
+                            ></field>
                         </h1>
                         <group>
                             <group>
-                                <field name="customer_id"></field>
-                                <field name="order_type"></field>
-                                <field name="order_tag_ids" widget="many2many_tags" options="{'color_field':'color', 'no_create': True}"></field>
+                                <field name="customer_id" required="order_type=='external'"
+                                 readonly="state in ('confirmed', 'in_process', 'delivered','cancelled')"></field>
+                                <field name="order_type" readonly="state in ('confirmed', 'in_process', 'delivered','cancelled')"></field>
+                                <field name="table_number" invisible="order_type!='internal'" readonly="state in ('confirmed', 'in_process', 'delivered','cancelled')"></field>
+                                <field name="order_tag_ids" widget="many2many_tags" options="{'color_field':'color', 'no_create': True}" readonly="state in ('delivered','cancelled')"></field>
                             </group>
                             <notebook>
                                 <page name="items" string="Items">
-                                    <field name="item_ids">
+                                    <field name="item_ids" readonly="state in ('confirmed', 'in_process', 'delivered','cancelled')">
                                         <tree> <!--editable = "top" restrict the pop up-->
                                             <field name="meal_id"></field>
                                             <field name="quantity"></field>
@@ -31,8 +42,8 @@
                                                     <field name="quantity"></field>
                                                 </group>
                                                 <group>
-                                                    <field name="price"></field>
-                                                    <field name="total_price"></field>
+                                                    <field name="price" readonly='True'></field>
+                                                    <field name="total_price" readonly='True'></field>
                                                 </group>
                                             </sheet>
                                         </form>
@@ -41,14 +52,14 @@
                                 </page>
                             </notebook>
                             <group>
-                                <field name="order_date"></field>
-                                <field name="total_price"></field>
-                                <field name="is_urgent"></field>
+                                <field name="order_date" readonly="state in ('confirmed', 'in_process', 'delivered','cancelled')"></field>
+                                <field name="total_price" readonly="True"></field>
+                                <field name="is_urgent" readonly="state in ('in_process', 'delivered','cancelled')"></field>
                                 
                             </group>
                             <group>
                                 <group>
-                                    <field name="note"></field>
+                                    <field name="note" readonly="state in ('confirmed', 'in_process', 'delivered','cancelled')"></field>
                                 </group>
                             </group>
                         </group>
@@ -60,12 +71,29 @@
             <field name="name">meal.order.tree.view</field>
             <field name="model">meal.order</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree
+                        decoration-success="state == 'delivered'"
+                        decoration-warning="state =='in_process'"
+                        decoration-info="state =='confirmed'"
+                        decoration-danger="state=='cancelled'"
+                        decoration-muted="state=='draft'"
+                >
                     <field name="name"></field>
+                    <field name="customer_id"></field>
                     <field name="order_type"></field>
+                    <field name="table_number" invisible="order_type!='internal'"></field>
                     <field name="order_date"></field>
-                    <field name="total_price"></field>
+                    <field name="total_price" optional="hide"></field>
+                    <field name="is_urgent" optional='show'></field>
                     <field name="note"></field>
+                    <field name="state" optional='show' widget='badge'
+                        decoration-success="state == 'delivered'"
+                        decoration-warning="state == 'in_process'"
+                        decoration-info="state =='confirmed'"
+                        decoration-danger="state=='cancelled'"
+                        decoration-muted="state=='draft'"
+                    >
+                    </field>
                 </tree>
             </field>
         </record>

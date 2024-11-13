@@ -6,17 +6,18 @@ class Order(models.Model):
     _name = "meal.order"
     _description = "Meal Order"
 
-    #name, sequence, active محجوز
+    #name, sequence, active, state محجوز
     #type مانو محجوز
     #name + char :  search
     #sequence + Integer: ترتيب
     #active + boolean : أرشفة
+    #state + selection
     name = fields.Char("Name",required=True, default=lambda self: _('New')) # default="New" "جديد" 
     total_price = fields.Float("Total Price", copy=False)
     order_type=fields.Selection([('internal','Internal'),('external','External')],
                                 string='Type',
                                 default='internal',
-                                required=True)
+                                required=True)  #key is unique, technically, changing it will cause problems
     order_date = fields.Date("Order Date", copy=False,default=fields.datetime.now().date())
     note = fields.Text("NOTE")
     customer_id = fields.Many2one("res.partner",string="Customer")
@@ -28,6 +29,13 @@ class Order(models.Model):
     expected_duration = fields.Float("Expected Duration")
     order_tag_ids=fields.Many2many("order.tag","Tags")
     item_ids = fields.One2many('order.item', 'order_id', string="Items")
+    state = fields.Selection([('draft','Draft'),
+                              ('confirmed','Confirmed'),
+                              ('in_process','In process'),
+                              ('delivered','Delivered'),
+                              ('cancelled','Cancelled')],
+                              string = "State", default='draft') #the order of selection tuples is important (for presenting)
+
     _sql_constraints=[
         ('unique_name', 'unique (name)', 'Order name already exists!'),
     ]
@@ -37,4 +45,18 @@ class Order(models.Model):
         for record in self:# (self either an object or a list of objects)
             if record.order_date and record.order_date > datetime.now().date():
                 raise ValidationError("Order date must be in present or past")
+            
+    #on change is working only on api not if I change in the code
+    def action_confirm(self):
+        self.state='confirmed'
+        self.order_date=datetime.now().date()
+
+    def action_in_process(self):
+        self.state='in_process'
+    
+    def action_delivered(self):
+        self.state='delivered'
+
+    def action_cancelled(self):
+        self.state='cancelled'
 
