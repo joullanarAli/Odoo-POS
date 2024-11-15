@@ -25,6 +25,12 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_meal_feedback" type="object" class="oe_stat_button" icon="fa-pencil-square" string="Feedback">
+                                <!-- <field name="field_name" string="View feedbacks" widget="statinfo"/> -->
+                            </button>
+                            <!-- <button type='action' name='%(tech_order1.customer_feedback_window_action)d' string="View Feedback" class="oe_state_button"></button> -->
+                        </div>
                         <group>
                             <group>
                                 <field name="name"></field>

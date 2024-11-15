@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <!-- <record id="customer_feedback_form_view" model="ir.ui.view">
+            <field name="name">customer.feedback.view.form</field>
+            <field name="model">customer.feedback</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <header>
+                            <button type="object" string="Approve" name="action_approve" class="btn-success"/>
+                            <button type="object" string="Reject" name="action_reject" class="btn-danger"/>
+                        </header>
+                        <group>
+                            <group>
+                                <field name="meal_id"></field>
+                                <field name="customer_id"></field>
+                            </group>
+                            <group>
+                                <field name="comment"></field>
+                                <field name="rate" widget="priority"></field>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record> -->
+
+        <record id="customer_feedback_tree_view" model="ir.ui.view">
+            <field name="name">customer.feedback.view.tree</field>
+            <field name="model">customer.feedback</field>
+            <field name="arch" type="xml">
+                <!--editable = "top" for preventing the form view to be displayed-->
+                <tree editable="top"
+                    decoration-muted="state == 'new'"
+                    decoration-success="state == 'approved'"
+                    decoration-danger="state == 'rejected'"
+                > 
+                    <field name="name"></field>
+                    <field name="meal_id"></field>
+                    <field name="customer_id"></field>
+                    <field name="comment"></field>
+                    <field name="rate" widget="priority"></field>
+                    <field name="state" widget='badge'
+                        decoration-muted="state == 'new'"
+                        decoration-success="state == 'approved'"
+                        decoration-danger="state == 'rejected'"
+                    ></field>
+                    <button type="object" string="Approve" name="action_approve" class="btn-success" invisible="state!='new'" />
+                    <button type="object" string="Reject" name="action_reject" class="btn-danger" invisible="state!='new'"/>
+                </tree>
+            </field>
+        </record>
+        <record id="customer_feedback_search_view" model="ir.ui.view">
+            <field name="name">customer.feedback.view.search</field>
+            <field name="model">customer.feedback</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="meal_id" string="Meal"></field>
+                    <field name="customer_id" string="Customer"></field>
+                    <separator/>
+                    <filter name="delicious_meal" string="Delicious Meal" domain="[('rate', '=', '3')]"/>
+                    <separator/>
+                    <filter name="bad_meal" string="Bad Meal" domain="[('rate', '=', '1')]" />
+                    <separator/>
+                    <filter name="good_meal" string="Good Meal" domain="[('rate', '=', '2')]" />
+                    <separator/>
+                </search>
+            </field>
+        </record>
+        <record id="customer_feedback_window_action" model="ir.actions.act_window">
+            <field name="name">Customer Feedback</field>
+            <field name="res_model">customer.feedback</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <menuitem
+            id="customer_feedback_menu"
+            name="Feedback"
+            action="customer_feedback_window_action"
+            parent="tech_order1.order_base_menu"
+            />
+    </data>
+    
+
+</odoo>

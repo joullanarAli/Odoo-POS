@@ -8,8 +8,26 @@ class Meal(models.Model):
     price = fields.Float("Price", copy=False)
     category_id = fields.Many2one("order.meal.category", string="Category", ondelete="restrict") # ondelete= "restrict","set_null" Default: "set_null"
     ingredient_ids = fields.One2many('meal.ingredient', 'meal_id', string="Ingredients")
+    feedback_ids=fields.One2many('customer.feedback','meal_id',string="Feedbacks")
 
-
+    def action_view_meal_feedback(self):
+        # select --> search
+        # *  --> ----
+        # from -->self.env['Model-Name']
+        # where  --> domain
+        #feedback_ids=self.env['customer.feedback'].search([('meal_id', '=', self.id)]) #list of objects
+        return {
+            'type':'ir.actions.act_window',
+            'name':'Feedback',
+            'view_mode':'tree',
+            'res_model':'customer.feedback',
+            'target':'current',
+            'domain':[('id','in',self.feedback_ids.ids)],
+            'context':{ #to not edit the meal feedback in another meal feedback
+                'default_meal_id':self.id
+            }
+            
+        }
 
 class OrderMealCategory(models.Model):
     _name = "order.meal.category"
