@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+    
+        <record id="feedback_reason_form_view" model="ir.ui.view">
+            <field name="name">feedback.reason.form.view</field>
+            <field name="model">feedback.reason</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    
+                    <group>
+                        <field name="reason"></field>
+                    </group>
+                    <footer>
+                        <button string="Add" name="add_reason" type="object" class="oe_highlight" />
+                        <button string="Close" class="btn-default" special='cancel'/> <!--special cancel to not do anything-->
+                    </footer>
+                
+                </form>
+            </field>
+        </record>
+        <record id="feedback_reason_window_action" model="ir.actions.act_window">
+            <field name="name">Feedback Reason</field>
+            <field name="res_model">feedback.reason</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            
+        </record>
+        <!--no need for menuitem because it's a popup and I know where I want it to be displayed-->
+    </data>
+    
+    
+
+</odoo>

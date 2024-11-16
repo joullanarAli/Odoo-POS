@@ -6,3 +6,4 @@ access_order_tag_user,access_order_tag_user,model_order_tag,,1,1,1,1
 access_order_item_user, access_order_item_user,model_order_item,,1,1,1,1
 access_meal_ingredient_user,access_meal_ingredient_user,model_meal_ingredient,,1,1,1,1
 access_customer_feedback_user,access_customer_feedback_user,model_customer_feedback,,1,1,1,1
+access_feedback_reason_user,access_feedback_reason_user,model_feedback_reason,,1,1,1,1

@@ -49,7 +49,7 @@
                         decoration-danger="state == 'rejected'"
                     ></field>
                     <button type="object" string="Approve" name="action_approve" class="btn-success" invisible="state!='new'" />
-                    <button type="object" string="Reject" name="action_reject" class="btn-danger" invisible="state!='new'"/>
+                    <button type="action" string="Reject" name="%(tech_order1.feedback_reason_window_action)d" class="btn-danger" invisible="state!='new'"/>
                 </tree>
             </field>
         </record>
