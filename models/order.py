@@ -13,7 +13,11 @@ class Order(models.Model):
     #active + boolean : أرشفة
     #state + selection
     name = fields.Char("Name",required=True, default=lambda self: _('New')) # default="New" "جديد" 
-    total_price = fields.Float("Total Price", copy=False)
+    #default: read only = false, when compute: read only = true 
+    #default: store = true, when compute: store = false
+    #default: copy = true, when compute: copy = false
+    #(default: required = false, when compute: required = false )+ translate + ondelete 
+    total_price = fields.Float("Total Price", compute="_compute_total_price") 
     order_type=fields.Selection([('internal','Internal'),('external','External')],
                                 string='Type',
                                 default='internal',
@@ -45,7 +49,17 @@ class Order(models.Model):
         for record in self:# (self either an object or a list of objects)
             if record.order_date and record.order_date > datetime.now().date():
                 raise ValidationError("Order date must be in present or past")
-            
+
+    @api.depends('item_ids','item_ids.total_price') #item_ids if I add item or delete item and the total_price of it
+    def _compute_total_price(self):
+        for record in self: # it's necessary to go into every record in computed method
+            total_price = 0
+            for item in record.item_ids: #item_ids is iterable
+                total_price += item.total_price
+            record.total_price= total_price
+        # we can use the map and sum to reduce the complexity
+
+
     #on change is working only on api not if I change in the code
     def action_confirm(self):
         self.state='confirmed'

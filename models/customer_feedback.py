@@ -13,7 +13,7 @@ class CustomerFeedback(models.Model):
                              ('3','3')],
                              string="Rates", default='0'
                              )
-    
+    reason = fields.Char('Reason')
     comment = fields.Char('Comment')
     state= fields.Selection([('new','New'),
                              ('approved','Approved'),

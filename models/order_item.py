@@ -9,7 +9,7 @@ class OrderItem(models.Model):
     meal_id = fields.Many2one ('order.meal', string ="Meal", copy=False)
     quantity = fields.Float("Quantity")
     price = fields.Float("Price")
-    total_price = fields.Float("Total Price")
+    total_price = fields.Float("Total Price", compute="_compute_item_total_price")
 
 
     @api.onchange('meal_id')
@@ -18,13 +18,21 @@ class OrderItem(models.Model):
             if record.meal_id:
                 record.price = record.meal_id.price
 
-    @api.onchange('price','quantity')
-    def calculate_total_price(self):
+    @api.depends('price','quantity')
+    def _compute_item_total_price(self):
         for record in self:
-            if record.quantity and record.price:
-                record.total_price = record.quantity * record.price
+            record.total_price=record.quantity * record.price
+
+    #onchange is sensetive more than compute and  more than constrains
+    #onchamge is in presentation tier, constrains and compute are in the logic tier
+    # @api.onchange('price','quantity')
+    # def calculate_total_price(self):
+    #     for record in self:
+    #         if record.quantity and record.price:
+    #             record.total_price = record.quantity * record.price
 
     @api.constrains('price')
     def check_price_value(self):
-        if self.price and self.price<=0:
-            raise ValidationError('Price must be bigger than zero')
+        for record in self:
+            if record.price and record.price<=0:
+                raise ValidationError('Price must be bigger than zero')
