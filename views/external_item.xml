@@ -1,0 +1,40 @@
+<odoo>
+
+    <data>
+    
+        <record id="external_item_view_form" model="ir.ui.view">
+            <field name="name">external.item.view.form</field>
+            <field name="model">external.item</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="product_id"></field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="external_item_view_tree" model="ir.ui.view">
+            <field name="name">external.item.view.tree</field>
+            <field name="model">external.item</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="product_id"></field>
+                </tree>
+            </field>
+        </record>
+        <record id="external_item_window_action" model="ir.actions.act_window">
+            <field name="name">External Item</field>
+            <field name="res_model">external.item</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem
+            id="external_item_menu"
+            name="External Item"
+            action="external_item_window_action"
+            parent="tech_order1.order_base_meal_menu"
+            />
+    </data>
+
+</odoo>

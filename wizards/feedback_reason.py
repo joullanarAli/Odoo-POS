@@ -3,7 +3,7 @@ from odoo import fields,models
 
 import logging
 _logger = logging.getLogger(__name__)
-
+#wizards are stored temporarely in the database
 class FeedbackReason(models.TransientModel):
     _name='feedback.reason'
     _description='Feedback Reason'

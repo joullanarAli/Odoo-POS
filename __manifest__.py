@@ -8,8 +8,8 @@
 Long description of module's purpose
     """,
 
-    'author': "My Company",
-    'website': "https://www.yourcompany.com",
+    'author': "Joullanar Ali",
+    'website': "https://www.linkedin.com/in/joullanar-ali-a09b771bb/",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
@@ -27,11 +27,14 @@ Long description of module's purpose
         'views/views.xml',
         # 'views/templates.xml',
         'views/meal.xml',
+        'wizards/add_external_item.xml',
         'views/order.xml',
         'views/order_tag.xml',
         'views/meal_ingredient.xml',
         'wizards/feedback_reson.xml',
         'views/customer_feedback.xml',
+        'views/external_item.xml',
+        'data/server_action.xml'
         
     ],
     # only loaded in demonstration mode

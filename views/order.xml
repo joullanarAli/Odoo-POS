@@ -10,9 +10,14 @@
                         <button string= 'in_process' type="object" name='action_in_process' class="btn-warning" invisible="state!='confirmed'"/>
                         <button string= 'delivered' type="object" name='action_delivered' class="btn-success" invisible="state!='in_process'"/>
                         <button string= 'cancelled' type="object" name='action_cancelled' class="btn-danger" invisible="state=='delivered'"/>
+                        <button type='action' name='%(tech_order1.external_item_wizard_window_action)d' 
+                        string="Add External Item" class='btn-primary' invisible="state!='draft'" ></button>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_process,delivered"></field>
                     </header>
                     <sheet>
+                        <!-- <div class="oe_button_box" name="button_box">
+                            <button type='action' name='%(tech_order1.external_item_wizard_window_action)d' string="Add External Item" class='btn-info'></button>
+                        </div> -->
                         <h1>
                             <field name="name" readonly="state in ('confirmed', 'in_process', 'delivered','cancelled')"
                                 required="state=='draft'"
@@ -34,6 +39,13 @@
                                             <field name="quantity"></field>
                                             <field name="price"></field>
                                             <field name="total_price"></field>
+                                            <field name="state" widget='badge'
+                                                decoration-success="state == 'delivered'"
+                                                decoration-warning="state == 'in_process'"
+                                                decoration-info="state =='confirmed'"
+                                                decoration-danger="state=='cancelled'"
+                                                decoration-muted="state=='draft'">
+                                            </field>
                                         </tree>
                                         <form>
                                             <sheet>
@@ -48,14 +60,23 @@
                                             </sheet>
                                         </form>
                                     </field>
-                                    
+                                </page>
+                                <page name='external_items' string='External items'>
+                                    <field name="external_item_ids">
+                                        <tree>
+                                            <field name="product_id"></field>
+                                        </tree>
+                                    </field>
                                 </page>
                             </notebook>
+                            
                             <group>
                                 <field name="order_date" readonly="state in ('confirmed', 'in_process', 'delivered','cancelled')"></field>
                                 <field name="total_price" readonly="True"></field>
+                                <field name="expected_duration" readonly="state in ('confirmed', 'in_process', 'delivered','cancelled')"></field>
+                                <field name="expected_date" readonly="state in ('confirmed', 'in_process', 'delivered','cancelled')"></field>
                                 <field name="is_urgent" readonly="state in ('in_process', 'delivered','cancelled')"></field>
-                                
+                                <field name="active"></field>
                             </group>
                             <group>
                                 <group>
@@ -84,6 +105,8 @@
                     <field name="table_number" invisible="order_type!='internal'"></field>
                     <field name="order_date"></field>
                     <field name="total_price" optional="hide"></field>
+                    <field name="expected_date"></field>
+                    <field name="expected_duration"></field>
                     <field name="is_urgent" optional='show'></field>
                     <field name="note"></field>
                     <field name="state" optional='show' widget='badge'

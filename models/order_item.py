@@ -10,7 +10,8 @@ class OrderItem(models.Model):
     quantity = fields.Float("Quantity")
     price = fields.Float("Price")
     total_price = fields.Float("Total Price", compute="_compute_item_total_price")
-
+    state = fields.Selection([],related='order_id.state') # order_id.state and state bothe are the same type (selection)
+    #related is like compute
 
     @api.onchange('meal_id')
     def set_price(self):

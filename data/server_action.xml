@@ -1,0 +1,19 @@
+<odoo>
+
+    <data>
+        <!--server action can works on form views but it's useful for tree views when select more than record-->
+        <record id="approve_customer_feedback" model="ir.actions.server">
+            <field name="name">Approve</field>
+            <field name="model_id" ref="tech_order1.model_customer_feedback"></field> <!--ref for many2one on external_id--> <!--the model you want the action read from it-->
+            <field name="binding_model_id" ref="tech_order1.model_customer_feedback"></field> <!--the model you want the action write on it-->
+            <field name="state">code</field>
+            <field name="code">if records:
+    for record in records:
+        record.action_approve()
+            </field>
+        </record>    
+    
+    </data>
+    
+
+</odoo>
