@@ -34,7 +34,8 @@ Long description of module's purpose
         'wizards/feedback_reson.xml',
         'views/customer_feedback.xml',
         'views/external_item.xml',
-        'data/server_action.xml'
+        'data/server_action.xml',
+        'data/schedule_action.xml'
         
     ],
     # only loaded in demonstration mode

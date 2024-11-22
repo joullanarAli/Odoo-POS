@@ -1,0 +1,24 @@
+<odoo>
+
+    <data>
+    
+        <record id="set_urgent_order" model="ir.cron">
+            <field name="name">Set Urgent</field>
+            <field name="model_id" ref= "tech_order1.model_meal_order"></field>
+            <field name="state">code</field>
+            <field name="code">open_orders = model.search([('state','=','confirmed')])
+open_orders.check_urgent_order()
+            </field>
+            <field name="user_id" ref = "base.user_root"></field>
+            <field eval="True" name="active"></field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field> <!-- -1 = infinity-->
+            <field eval="False" name="doall"></field> <!--in the case of missing-->
+            <!-- <field name="nextcall" eval="(Datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')"></field> -->
+        </record>
+    
+    </data>
+    
+
+</odoo>

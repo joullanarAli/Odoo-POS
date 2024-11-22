@@ -1,6 +1,8 @@
 from odoo import fields,models, _, api
 from datetime import date, datetime, timedelta
 from odoo.exceptions import ValidationError
+import logging
+_logger = logging.getLogger(__name__)
 
 class Order(models.Model):
     _name = "meal.order"
@@ -84,4 +86,10 @@ class Order(models.Model):
 
     def action_cancelled(self):
         self.state='cancelled'
+    
+    def check_urgent_order(self):
+        for record in self:
+            expected = record.expected_date - timedelta(days=1)
+            if expected.date() == datetime.now().date() :
+                record.is_urgent = True
 
